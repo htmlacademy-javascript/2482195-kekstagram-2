@@ -28,19 +28,19 @@ const renderComments = (comments) => {
   bigPictureCommentContainer.append(fragment);
 };
 
-const onModalEscapeKeyDown = (evt) => {
+function onModalEscapeKeyDown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeBigPhoto();
   }
-};
+}
 
-const closeBigPhoto = () => {
+function closeBigPhoto() {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onModalEscapeKeyDown);
-};
+}
 
 const openBigPhoto = (photo) => {
   bigPicture.classList.remove('hidden');
