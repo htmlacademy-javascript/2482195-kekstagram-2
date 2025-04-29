@@ -1,4 +1,4 @@
-import {photosArray} from './create-photos-array.js';
+import { photosArray } from './create-photos-array.js';
 import { openBigPhoto } from './open-photos.js';
 
 const picturesContainer = document.querySelector('.pictures');
@@ -24,6 +24,7 @@ const renderThumbnails = (photos) => {
     if (evt.target.classList.contains('picture__img')) {
       const id = evt.target.closest('.picture').dataset.id;
       const picture = photos.find((item) => item.id === id * 1);
+      evt.preventDefault();
       openBigPhoto(picture);
     }
   });
