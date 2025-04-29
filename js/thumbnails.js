@@ -13,7 +13,7 @@ const renderThumbnails = (photos) => {
     pictureElement.querySelector('img').src = url;
     pictureElement.querySelector('img').alt = description;
     pictureElement.querySelector('.picture__likes').textContent = likes;
-    pictureElement.querySelector('.picture__comments').textContent = comments;
+    pictureElement.querySelector('.picture__comments').textContent = comments.length;
 
     fragment.appendChild(pictureElement);
   });
