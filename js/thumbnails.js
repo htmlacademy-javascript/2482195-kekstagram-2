@@ -1,4 +1,4 @@
-import {photosArray} from './create-photos-array.js';
+import { photosArray } from './create-photos-array.js';
 import { openBigPhoto } from './open-photos.js';
 
 const picturesContainer = document.querySelector('.pictures');
@@ -13,7 +13,7 @@ const renderThumbnails = (photos) => {
     pictureElement.querySelector('img').src = url;
     pictureElement.querySelector('img').alt = description;
     pictureElement.querySelector('.picture__likes').textContent = likes;
-    pictureElement.querySelector('.picture__comments').textContent = comments;
+    pictureElement.querySelector('.picture__comments').textContent = comments.length;
 
     fragment.appendChild(pictureElement);
   });
@@ -24,6 +24,7 @@ const renderThumbnails = (photos) => {
     if (evt.target.classList.contains('picture__img')) {
       const id = evt.target.closest('.picture').dataset.id;
       const picture = photos.find((item) => item.id === id * 1);
+      evt.preventDefault();
       openBigPhoto(picture);
     }
   });
