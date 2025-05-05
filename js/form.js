@@ -1,4 +1,4 @@
-import { validateForm } from './validation';
+import { validateForm, resetValidation } from './validation';
 
 const imageUploadInput = document.querySelector('.img-upload__input');
 const imageUploadModal = document.querySelector('.img-upload__overlay');
@@ -26,7 +26,11 @@ const openUploadModal = () => {
 const closeUploadModal = () => {
   imageUploadModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
+
+  resetValidation();
+
   uploadFormElement.reset();
+
   document.removeEventListener('keydown', onClickEsc);
   imageUploadModal.removeEventListener('click', onClickOutside);
 };
