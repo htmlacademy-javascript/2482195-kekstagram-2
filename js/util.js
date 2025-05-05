@@ -12,8 +12,12 @@ const getRandomArrayElement = (elements) => elements[getRandomInteger(0, element
 //Функция для проверки нажатия клавиши "Escape"
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
+//Функция для проверки соответствия длины строки
+const isStringLengthValid = (str, maxLength) => str.length <= maxLength;
+
 export {
   getRandomInteger,
   getRandomArrayElement,
-  isEscapeKey
+  isEscapeKey,
+  isStringLengthValid
 };
