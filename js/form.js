@@ -1,4 +1,6 @@
-import { validateForm } from './validation';
+import { validateForm, resetValidation } from './validation.js';
+import { resetScale } from './scale-editor.js';
+import { resetEffects } from './filter-editor.js';
 
 const imageUploadInput = document.querySelector('.img-upload__input');
 const imageUploadModal = document.querySelector('.img-upload__overlay');
@@ -21,12 +23,18 @@ const openUploadModal = () => {
   updateImagePreview();
   document.addEventListener('keydown', onClickEsc);
   imageUploadModal.addEventListener('click', onClickOutside);
+  resetScale();
+  resetEffects();
 };
 
 const closeUploadModal = () => {
   imageUploadModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
+
+  resetValidation();
+
   uploadFormElement.reset();
+
   document.removeEventListener('keydown', onClickEsc);
   imageUploadModal.removeEventListener('click', onClickOutside);
 };
