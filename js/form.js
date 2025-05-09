@@ -21,10 +21,14 @@ const openUploadModal = () => {
   imageUploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   updateImagePreview();
+
   document.addEventListener('keydown', onClickEsc);
   imageUploadModal.addEventListener('click', onClickOutside);
-  resetScale();
+
   resetEffects();
+
+  resetScale();
+
 };
 
 const closeUploadModal = () => {
@@ -34,6 +38,8 @@ const closeUploadModal = () => {
   resetValidation();
 
   uploadFormElement.reset();
+
+  resetEffects();
 
   document.removeEventListener('keydown', onClickEsc);
   imageUploadModal.removeEventListener('click', onClickOutside);

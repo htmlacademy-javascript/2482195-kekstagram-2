@@ -12,7 +12,7 @@ noUiSlider.create(effectSlider, {
     min: 0,
     max: 100,
   },
-  start: 100,
+  start: 50,
   connect: 'lower',
 });
 
@@ -24,7 +24,7 @@ const updateSliderOption = (effect) => {
           min: 0,
           max: 1,
         },
-        start: 1,
+        start: 0.5,
         step: 0.1,
       });
       break;
@@ -35,7 +35,7 @@ const updateSliderOption = (effect) => {
           max: 1,
         },
         step: 0.1,
-        start: 1,
+        start: 0.5,
       });
       break;
     case 'marvin':
@@ -45,7 +45,7 @@ const updateSliderOption = (effect) => {
           max: 100,
         },
         step: 1,
-        start: 100,
+        start: 50,
       });
       break;
     case 'phobos':
@@ -55,7 +55,7 @@ const updateSliderOption = (effect) => {
           max: 3,
         },
         step: 0.1,
-        start: 3,
+        start: 1.5,
       });
       break;
     case 'heat':
@@ -65,7 +65,7 @@ const updateSliderOption = (effect) => {
           max: 3,
         },
         step: 0.1,
-        start: 3,
+        start: 1.5,
       });
       break;
   }
@@ -119,8 +119,13 @@ effectsRadioList.addEventListener('change', (evt) => {
 
 const resetEffects = () => {
   defaultImage();
+
+  effectSliderBlock.classList.add('hidden');
+
   noEffectRadio.checked = true;
   effectHiddenInput.value = 'none';
+
+  effectSlider.noUiSlider.set(50);
 };
 
 export { resetEffects };
