@@ -4,7 +4,7 @@ import {
   MAX_HASHTAGS_COUNT,
   HASHTAG_REGEX,
   MAX_HASHTAGS_LENGTH
-} from './data.js';
+} from './constants.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagsField = document.querySelector('.text__hashtags');

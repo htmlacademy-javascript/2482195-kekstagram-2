@@ -1,10 +1,11 @@
 import { BASE_URL, Route, Method, ErrorText } from './constants.js';
-
+import { showAlert } from './util.js';
 
 const load = (route, errorText, method = Method.GET, body = null) =>
   fetch(`${BASE_URL}${route}`, {method, body})
     .then((response) => {
       if (!response.ok) {
+        showAlert('err');
         throw new Error();
       }
       return response.json();

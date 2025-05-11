@@ -73,7 +73,7 @@ const EFFECTS = {
         min: 1,
         max: 3
       },
-      start: 1.5,
+      start: 2,
       step: 0.1
     }
   }

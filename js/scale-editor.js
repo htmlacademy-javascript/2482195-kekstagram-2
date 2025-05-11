@@ -1,4 +1,4 @@
-import { SCALE_STEP, MIN_SCALE, MAX_SCALE } from './data.js';
+import { SCALE_STEP, MIN_SCALE, MAX_SCALE } from './constants.js';
 
 const decreaseButton = document.querySelector('.scale__control--smaller');
 const increaseButton = document.querySelector('.scale__control--bigger');
