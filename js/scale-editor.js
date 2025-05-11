@@ -4,7 +4,7 @@ const decreaseButton = document.querySelector('.scale__control--smaller');
 const increaseButton = document.querySelector('.scale__control--bigger');
 const scaleInput = document.querySelector('.scale__control--value');
 
-const scaleHiddenInput = document.querySelector('#scale-hidden');
+const scaleHiddenInput = document.querySelector('#effect-hidden');
 
 let scale = 100;
 
