@@ -3,7 +3,7 @@ import { validateForm, resetValidation } from './validation.js';
 import { resetScale } from './scale-editor.js';
 import { resetEffects } from './filter-editor.js';
 import { SUBMIT_BUTTON_TEXT } from './constants.js';
-import {showSuccessPopup, showErrorPopup } from './notifications.js';
+import { showPopup } from './notifications.js';
 
 const imageUploadInput = document.querySelector('.img-upload__input');
 const imageUploadModal = document.querySelector('.img-upload__overlay');
@@ -13,14 +13,14 @@ const cancelUploadButton = document.querySelector('.img-upload__cancel');
 const uploadFormElement = document.querySelector('.img-upload__form');
 const submitButton = document.querySelector('.img-upload__submit');
 
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
-};
-
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
+const setSubmitButtonState = (state) => {
+  if (state === 'sending') {
+    submitButton.disabled = true;
+    submitButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
+  } else {
+    submitButton.disabled = false;
+    submitButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
+  }
 };
 
 const updateImagePreview = () => {
@@ -63,28 +63,25 @@ uploadFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   if (validateForm()) {
-    closeUploadModal();
-    evt.preventDefault();
-    blockSubmitButton();
+    setSubmitButtonState('sending');
 
     sendPhotos(new FormData(evt.target))
       .then((response) => {
         if (response.ok) {
-          showSuccessPopup();
+          showPopup('success');
           closeUploadModal();
         } else {
-          showErrorPopup();
+          showPopup('error');
         }
       })
       .catch(() => {
-        showErrorPopup();
+        showPopup('error');
       })
       .finally(() => {
-        unblockSubmitButton();
+        setSubmitButtonState('idle');
       });
   }
 });
-
 
 imageUploadInput.addEventListener('change', () => {
   openUploadModal();

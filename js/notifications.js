@@ -1,7 +1,23 @@
 import { onEscapeForm } from './form.js';
+import { ErrorText, ALERT_SHOW_TIME } from './constants.js';
 
-const successTemplate = document.querySelector('#success').content.querySelector('.success');
-const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const templates = {
+  success: document.querySelector('#success').content.querySelector('.success'),
+  error: document.querySelector('#error').content.querySelector('.error')
+};
+
+const showDataErrorMessage = () => {
+  const errorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
+  const errorMessage = errorTemplate.cloneNode(true);
+
+  errorMessage.querySelector('.data-error__title').textContent = ErrorText.GET_DATA;
+
+  document.body.append(errorMessage);
+
+  setTimeout(() => {
+    errorMessage.remove();
+  }, ALERT_SHOW_TIME);
+};
 
 const closePopupHandler = () => {
   document.querySelector('.popup').remove();
@@ -11,23 +27,19 @@ const closePopupHandler = () => {
   document.body.classList.remove('modal-open');
 };
 
-const showSuccessPopup = () => {
-  const successPopup = successTemplate.cloneNode(true);
-  document.body.append(successPopup);
-  successPopup.classList.add('popup');
+const showPopup = (type) => {
+  const popupElement = templates[type].cloneNode(true);
+  document.body.append(popupElement);
+  popupElement.classList.add('popup');
   document.body.classList.add('modal-open');
 
-  const closeButton = document.querySelector('.success__button');
-  closeButton.addEventListener('click', closePopupHandler);
+  const closeButton = popupElement.querySelector(`.${type}__button`);
+  if (closeButton) {
+    closeButton.addEventListener('click', closePopupHandler);
+  }
+
   document.addEventListener('keydown', onEscKeydown);
   document.addEventListener('click', onClickOutside);
-};
-
-const showErrorPopup = () => {
-  const errorPopup = errorTemplate.cloneNode(true);
-  document.body.append(errorPopup);
-  errorPopup.classList.add('popup');
-  document.body.classList.add('modal-open');
 };
 
 function onEscKeydown(evt) {
@@ -37,12 +49,16 @@ function onEscKeydown(evt) {
 }
 
 function onClickOutside(evt) {
-  if (evt.target.classList.contains('overlay')) {
+  if (
+    evt.target.classList.contains('overlay') ||
+    evt.target.classList.contains('success') ||
+    evt.target.classList.contains('error')
+  ) {
     closePopupHandler();
   }
 }
 
 export {
-  showSuccessPopup,
-  showErrorPopup
+  showPopup,
+  showDataErrorMessage
 };
