@@ -3,17 +3,18 @@ import { SCALE_STEP, MIN_SCALE, MAX_SCALE } from './constants.js';
 const decreaseButton = document.querySelector('.scale__control--smaller');
 const increaseButton = document.querySelector('.scale__control--bigger');
 const scaleInput = document.querySelector('.scale__control--value');
+const PreviewImage = document.querySelector('.img-upload__preview img');
+const scaleHiddenInput = document.querySelector('#scale-hidden');
 
-const scaleHiddenInput = document.querySelector('#effect-hidden');
-
-let scale = 100;
+let scale = MAX_SCALE;
 
 const updateScaleDisplay = () => {
   scaleInput.value = `${scale}%`;
-  const PreviewImage = document.querySelector('.img-upload__preview img');
   PreviewImage.style.transform = `scale(${scale * 0.01})`;
 
-  scaleHiddenInput.value = scale;
+  if (scaleHiddenInput) {
+    scaleHiddenInput.value = scale;
+  }
 
   if (scale === MIN_SCALE) {
     decreaseButton.disabled = true;
