@@ -1,3 +1,5 @@
+import { EFFECTS } from './effect-settings.js';
+
 const effectSlider = document.querySelector('.effect-level__slider');
 const effectsRadioList = document.querySelector('.effects__list');
 const sliderValue = document.querySelector('.effect-level__value');
@@ -12,87 +14,25 @@ noUiSlider.create(effectSlider, {
     min: 0,
     max: 100,
   },
-  start: 100,
+  start: 50,
   connect: 'lower',
 });
 
-const updateSliderOption = (effect) => {
-  switch (effect) {
-    case 'chrome':
-      effectSlider.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 1,
-        },
-        start: 1,
-        step: 0.1,
-      });
-      break;
-    case 'sepia':
-      effectSlider.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 1,
-        },
-        step: 0.1,
-        start: 1,
-      });
-      break;
-    case 'marvin':
-      effectSlider.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 100,
-        },
-        step: 1,
-        start: 100,
-      });
-      break;
-    case 'phobos':
-      effectSlider.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 3,
-        },
-        step: 0.1,
-        start: 3,
-      });
-      break;
-    case 'heat':
-      effectSlider.noUiSlider.updateOptions({
-        range: {
-          min: 1,
-          max: 3,
-        },
-        step: 0.1,
-        start: 3,
-      });
-      break;
+const updateSliderOption = (effectName) => {
+  if (EFFECTS[effectName]) {
+    effectSlider.noUiSlider.updateOptions(EFFECTS[effectName].options);
   }
 };
 
-const renderEffect = (effect) => {
-  let filterStyle = '';
-  switch (effect) {
-    case 'chrome':
-      filterStyle = `grayscale(${sliderValue.value})`;
-      break;
-    case 'sepia':
-      filterStyle = `sepia(${sliderValue.value})`;
-      break;
-    case 'marvin':
-      filterStyle = `invert(${sliderValue.value}%)`;
-      break;
-    case 'phobos':
-      filterStyle = `blur(${sliderValue.value}px)`;
-      break;
-    case 'heat':
-      filterStyle = `brightness(${sliderValue.value})`;
-      break;
+const renderEffect = (effectName) => {
+  if (effectName === 'none') {
+    image.style.filter = '';
+  } else if (EFFECTS[effectName]) {
+    const { filter, unit } = EFFECTS[effectName];
+    image.style.filter = `${filter}(${sliderValue.value}${unit})`;
   }
-  image.style.filter = filterStyle;
 
-  effectHiddenInput.value = effect;
+  effectHiddenInput.value = effectName;
 };
 
 effectSlider.noUiSlider.on('update', () => {
@@ -107,20 +47,26 @@ const defaultImage = () => {
 
 effectsRadioList.addEventListener('change', (evt) => {
   if (evt.target.name === 'effect') {
-    if (evt.target.value === 'none') {
+    const effectName = evt.target.value;
+    if (effectName === 'none') {
       defaultImage();
     } else {
-      renderEffect(evt.target.value);
+      renderEffect(effectName);
       effectSliderBlock.classList.remove('hidden');
     }
-    updateSliderOption(evt.target.value);
+    updateSliderOption(effectName);
   }
 });
 
 const resetEffects = () => {
   defaultImage();
+
+  effectSliderBlock.classList.add('hidden');
+
   noEffectRadio.checked = true;
   effectHiddenInput.value = 'none';
+
+  effectSlider.noUiSlider.set(50);
 };
 
 export { resetEffects };

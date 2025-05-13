@@ -1,6 +1,9 @@
+import { sendPhotos } from './api.js';
 import { validateForm, resetValidation } from './validation.js';
 import { resetScale } from './scale-editor.js';
 import { resetEffects } from './filter-editor.js';
+import { SUBMIT_BUTTON_TEXT } from './constants.js';
+import { showPopup } from './notifications.js';
 
 const imageUploadInput = document.querySelector('.img-upload__input');
 const imageUploadModal = document.querySelector('.img-upload__overlay');
@@ -8,6 +11,17 @@ const previewImageElement = imageUploadModal.querySelector('.img-upload__preview
 const effectPreviewIcons = imageUploadModal.querySelectorAll('.effects__preview');
 const cancelUploadButton = document.querySelector('.img-upload__cancel');
 const uploadFormElement = document.querySelector('.img-upload__form');
+const submitButton = document.querySelector('.img-upload__submit');
+
+const setSubmitButtonState = (state) => {
+  if (state === 'sending') {
+    submitButton.disabled = true;
+    submitButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
+  } else {
+    submitButton.disabled = false;
+    submitButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
+  }
+};
 
 const updateImagePreview = () => {
   const fileImage = imageUploadInput.files[0];
@@ -21,10 +35,14 @@ const openUploadModal = () => {
   imageUploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   updateImagePreview();
-  document.addEventListener('keydown', onClickEsc);
+
+  document.addEventListener('keydown', onEscapeForm);
   imageUploadModal.addEventListener('click', onClickOutside);
-  resetScale();
+
   resetEffects();
+
+  resetScale();
+
 };
 
 const closeUploadModal = () => {
@@ -35,7 +53,9 @@ const closeUploadModal = () => {
 
   uploadFormElement.reset();
 
-  document.removeEventListener('keydown', onClickEsc);
+  resetEffects();
+
+  document.removeEventListener('keydown', onEscapeForm);
   imageUploadModal.removeEventListener('click', onClickOutside);
 };
 
@@ -43,7 +63,23 @@ uploadFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   if (validateForm()) {
-    closeUploadModal();
+    setSubmitButtonState('sending');
+
+    sendPhotos(new FormData(evt.target))
+      .then((response) => {
+        if (response.ok) {
+          showPopup('success');
+          closeUploadModal();
+        } else {
+          showPopup('error');
+        }
+      })
+      .catch(() => {
+        showPopup('error');
+      })
+      .finally(() => {
+        setSubmitButtonState('idle');
+      });
   }
 });
 
@@ -55,7 +91,7 @@ cancelUploadButton.addEventListener('click', () => {
   closeUploadModal();
 });
 
-function onClickEsc(evt) {
+function onEscapeForm(evt) {
   const isFocusedInput = evt.target.classList.contains('text__hashtags') || evt.target.classList.contains('text__description');
   if (isFocusedInput) {
     return false;
@@ -70,3 +106,5 @@ function onClickOutside(evt) {
     closeUploadModal();
   }
 }
+
+export { onEscapeForm };

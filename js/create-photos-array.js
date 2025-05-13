@@ -45,8 +45,4 @@ function generatePhotos () {
 // Генерируем массив фотографий
 const photosArray = generatePhotos();
 
-//Выводим массив в консоль
-// eslint-disable-next-line no-console
-console.log(photosArray);
-
-export {photosArray};
+export { photosArray };

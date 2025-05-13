@@ -4,7 +4,7 @@ import {
   MAX_HASHTAGS_COUNT,
   HASHTAG_REGEX,
   MAX_HASHTAGS_LENGTH
-} from './data.js';
+} from './constants.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagsField = document.querySelector('.text__hashtags');
@@ -28,7 +28,12 @@ pristine.addValidator(
   `Длина описания не должна превышать ${MAX_DESCRIPTION_LENGTH} символов.`
 );
 
-const isHashtagsCountValid = (value) => value.replace(/ +/g, ' ').trim().split(' ').length <= MAX_HASHTAGS_COUNT;
+const isHashtagsCountValid = (value) => {
+  if (!value.trim()) {
+    return true;
+  }
+  return value.replace(/ +/g, ' ').trim().split(' ').length <= MAX_HASHTAGS_COUNT;
+};
 
 pristine.addValidator(
   hashtagsField,
@@ -39,6 +44,9 @@ pristine.addValidator(
 );
 
 const areHashtagsValid = (value) => {
+  if (!value.trim()) {
+    return true;
+  }
   const tags = value.replace(/ +/g, ' ').trim().split(' ');
   return !tags.some((tag) => !HASHTAG_REGEX.test(tag));
 };
@@ -52,6 +60,9 @@ pristine.addValidator(
 );
 
 const areHashtagsUnique = (value) => {
+  if (!value.trim()) {
+    return true;
+  }
   const tags = value.replace(/ +/g, ' ').trim().toLowerCase().split(' ');
   const uniqueTags = [...new Set(tags)];
   return tags.length === uniqueTags.length;
