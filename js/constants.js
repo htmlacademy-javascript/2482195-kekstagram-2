@@ -28,6 +28,16 @@ const SUBMIT_BUTTON_TEXT = {
   SENDING: 'Отправка...'
 };
 
+const SUBMISSION_STATE = {
+  SENDING: 'sending',
+  IDLE: 'idle',
+};
+
+const POPUP_TYPE = {
+  SUCCESS: 'success',
+  ERROR: 'error',
+};
+
 export {
   MAX_DESCRIPTION_LENGTH,
   MAX_HASHTAGS_COUNT,
@@ -41,5 +51,7 @@ export {
   Method,
   ErrorText,
   ALERT_SHOW_TIME,
-  SUBMIT_BUTTON_TEXT
+  SUBMIT_BUTTON_TEXT,
+  SUBMISSION_STATE,
+  POPUP_TYPE
 };

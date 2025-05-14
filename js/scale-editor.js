@@ -3,14 +3,14 @@ import { SCALE_STEP, MIN_SCALE, MAX_SCALE } from './constants.js';
 const decreaseButton = document.querySelector('.scale__control--smaller');
 const increaseButton = document.querySelector('.scale__control--bigger');
 const scaleInput = document.querySelector('.scale__control--value');
-const PreviewImage = document.querySelector('.img-upload__preview img');
+const previewImage = document.querySelector('.img-upload__preview img');
 const scaleHiddenInput = document.querySelector('#scale-hidden');
 
 let scale = MAX_SCALE;
 
 const updateScaleDisplay = () => {
   scaleInput.value = `${scale}%`;
-  PreviewImage.style.transform = `scale(${scale * 0.01})`;
+  previewImage.style.transform = `scale(${scale * 0.01})`;
 
   if (scaleHiddenInput) {
     scaleHiddenInput.value = scale;
