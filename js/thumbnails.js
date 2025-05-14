@@ -1,4 +1,3 @@
-import { photosArray } from './create-photos-array.js';
 import { openBigPhoto } from './open-photos.js';
 
 const picturesContainer = document.querySelector('.pictures');
@@ -29,7 +28,5 @@ const renderThumbnails = (photos) => {
     }
   });
 };
-
-renderThumbnails(photosArray);
 
 export { renderThumbnails };

@@ -1,4 +1,4 @@
-const EFFECTS = {
+export const EFFECTS = {
   none: {
     name: 'none',
     filter: '',
@@ -78,5 +78,3 @@ const EFFECTS = {
     }
   }
 };
-
-export { EFFECTS };

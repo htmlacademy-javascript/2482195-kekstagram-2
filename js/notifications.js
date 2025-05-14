@@ -1,5 +1,5 @@
 import { onEscapeForm } from './form.js';
-import { ErrorText, ALERT_SHOW_TIME } from './constants.js';
+import { Route, ALERT_SHOW_TIME } from './constants.js';
 
 const templates = {
   success: document.querySelector('#success').content.querySelector('.success'),
@@ -10,7 +10,7 @@ const showDataErrorMessage = () => {
   const errorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
   const errorMessage = errorTemplate.cloneNode(true);
 
-  errorMessage.querySelector('.data-error__title').textContent = ErrorText.GET_DATA;
+  errorMessage.querySelector('.data-error__title').textContent = Route.GET_DATA.error;
 
   document.body.append(errorMessage);
 
