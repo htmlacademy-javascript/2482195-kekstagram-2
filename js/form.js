@@ -2,7 +2,7 @@ import { sendPhotos } from './api.js';
 import { validateForm, resetValidation } from './validation.js';
 import { resetScale } from './scale-editor.js';
 import { resetEffects } from './filter-editor.js';
-import { SUBMIT_BUTTON_TEXT } from './constants.js';
+import { SUBMIT_BUTTON_TEXT, SUBMISSION_STATE, POPUP_TYPE } from './constants.js';
 import { showPopup } from './notifications.js';
 
 const imageUploadInput = document.querySelector('.img-upload__input');
@@ -14,7 +14,7 @@ const uploadFormElement = document.querySelector('.img-upload__form');
 const submitButton = document.querySelector('.img-upload__submit');
 
 const setSubmitButtonState = (state) => {
-  if (state === 'sending') {
+  if (state === SUBMISSION_STATE.SENDING) {
     submitButton.disabled = true;
     submitButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
   } else {
@@ -63,22 +63,18 @@ uploadFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   if (validateForm()) {
-    setSubmitButtonState('sending');
+    setSubmitButtonState(SUBMISSION_STATE.SENDING);
 
     sendPhotos(new FormData(evt.target))
-      .then((response) => {
-        if (response.ok) {
-          showPopup('success');
-          closeUploadModal();
-        } else {
-          showPopup('error');
-        }
+      .then(() => {
+        showPopup(POPUP_TYPE.SUCCESS);
+        closeUploadModal();
       })
       .catch(() => {
-        showPopup('error');
+        showPopup(POPUP_TYPE.ERROR);
       })
       .finally(() => {
-        setSubmitButtonState('idle');
+        setSubmitButtonState(SUBMISSION_STATE.IDLE);
       });
   }
 });

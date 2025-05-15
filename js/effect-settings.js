@@ -1,4 +1,4 @@
-const EFFECTS = {
+export const EFFECTS = {
   none: {
     name: 'none',
     filter: '',
@@ -8,7 +8,7 @@ const EFFECTS = {
         min: 0,
         max: 100
       },
-      start: 50,
+      start: 100,
       step: 1
     }
   },
@@ -21,7 +21,7 @@ const EFFECTS = {
         min: 0,
         max: 1
       },
-      start: 0.5,
+      start: 1,
       step: 0.1
     }
   },
@@ -34,7 +34,7 @@ const EFFECTS = {
         min: 0,
         max: 1
       },
-      start: 0.5,
+      start: 1,
       step: 0.1
     }
   },
@@ -47,7 +47,7 @@ const EFFECTS = {
         min: 0,
         max: 100
       },
-      start: 50,
+      start: 100,
       step: 1
     }
   },
@@ -60,7 +60,7 @@ const EFFECTS = {
         min: 0,
         max: 3
       },
-      start: 1.5,
+      start: 3,
       step: 0.1
     }
   },
@@ -73,10 +73,8 @@ const EFFECTS = {
         min: 1,
         max: 3
       },
-      start: 2,
+      start: 3,
       step: 0.1
     }
   }
 };
-
-export { EFFECTS };

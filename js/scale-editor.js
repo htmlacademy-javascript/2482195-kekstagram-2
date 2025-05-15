@@ -1,31 +1,18 @@
-import { SCALE_STEP, MIN_SCALE, MAX_SCALE } from './constants.js';
+import { SCALE_STEP, MIN_SCALE, MAX_SCALE, SCALE_FACTOR } from './constants.js';
 
 const decreaseButton = document.querySelector('.scale__control--smaller');
 const increaseButton = document.querySelector('.scale__control--bigger');
 const scaleInput = document.querySelector('.scale__control--value');
 
-const scaleHiddenInput = document.querySelector('#effect-hidden');
-
-let scale = 100;
+let scale = MAX_SCALE;
 
 const updateScaleDisplay = () => {
   scaleInput.value = `${scale}%`;
-  const PreviewImage = document.querySelector('.img-upload__preview img');
-  PreviewImage.style.transform = `scale(${scale * 0.01})`;
+  const previewImage = document.querySelector('.img-upload__preview img');
+  previewImage.style.transform = `scale(${scale * SCALE_FACTOR})`;
 
-  scaleHiddenInput.value = scale;
-
-  if (scale === MIN_SCALE) {
-    decreaseButton.disabled = true;
-  } else {
-    decreaseButton.disabled = false;
-  }
-
-  if (scale === MAX_SCALE) {
-    increaseButton.disabled = true;
-  } else {
-    increaseButton.disabled = false;
-  }
+  decreaseButton.disabled = scale === MIN_SCALE;
+  increaseButton.disabled = scale === MAX_SCALE;
 };
 
 const handleDecreaseClick = () => {
