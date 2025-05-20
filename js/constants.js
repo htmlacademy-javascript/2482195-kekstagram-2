@@ -47,3 +47,9 @@ export const SCALE_FACTOR = 0.01;
 export const RANDOM_PHOTOS_COUNT = 10;
 
 export const DEBOUNCE_DELAY = 500;
+
+export const FilterType = {
+  DEFAULT: 'filter-default',
+  RANDOM: 'filter-random',
+  DISCUSSED: 'filter-discussed',
+};

@@ -1,4 +1,4 @@
-import { RANDOM_PHOTOS_COUNT, DEBOUNCE_DELAY } from './constants.js';
+import { RANDOM_PHOTOS_COUNT, DEBOUNCE_DELAY, FilterType } from './constants.js';
 import { renderThumbnails, clearThumbnails } from './thumbnails.js';
 import { debounce, getRandomArrayItems } from './util.js';
 
@@ -16,20 +16,15 @@ const setActiveFilterButton = (clickedButton) => {
   clickedButton.classList.add('img-filters__button--active');
 };
 
+const filterStrategies = {
+  [FilterType.DEFAULT]: (photos) => [...photos],
+  [FilterType.RANDOM]: (photos) => getRandomArrayItems(photos, RANDOM_PHOTOS_COUNT),
+  [FilterType.DISCUSSED]: (photos) => [...photos].sort((a, b) => b.comments.length - a.comments.length),
+};
+
 const applyFilter = (filterId, photos) => {
-  switch (filterId) {
-    case 'filter-default':
-      return [...photos];
-
-    case 'filter-random':
-      return getRandomArrayItems(photos, RANDOM_PHOTOS_COUNT);
-
-    case 'filter-discussed':
-      return [...photos].sort((a, b) => b.comments.length - a.comments.length);
-
-    default:
-      return [...photos];
-  }
+  const strategy = filterStrategies[filterId] || filterStrategies[FilterType.DEFAULT];
+  return strategy(photos);
 };
 
 const debouncedRender = debounce((filterId, photos) => {
