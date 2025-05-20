@@ -1,5 +1,5 @@
 import { RANDOM_PHOTOS_COUNT, DEBOUNCE_DELAY } from './constants.js';
-import { renderThumbnails } from './thumbnails.js';
+import { renderThumbnails, clearThumbnails } from './thumbnails.js';
 import { debounce, getRandomArrayItems } from './util.js';
 
 const filterBlock = document.querySelector('.img-filters');
@@ -32,19 +32,23 @@ const applyFilter = (filterId, photos) => {
   }
 };
 
+const debouncedRender = debounce((filterId, photos) => {
+  const filteredPhotos = applyFilter(filterId, photos);
+  clearThumbnails();
+  renderThumbnails(filteredPhotos);
+}, DEBOUNCE_DELAY);
+
 const initFilters = (photos) => {
   showFilters();
   renderThumbnails(photos);
 
-  filterBlock.addEventListener('click', debounce((evt) => {
+  filterBlock.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('img-filters__button')) {
       const selectedFilter = evt.target.id;
-      const filteredPhotos = applyFilter(selectedFilter, photos);
-
-      renderThumbnails(filteredPhotos);
       setActiveFilterButton(evt.target);
+      debouncedRender(selectedFilter, photos);
     }
-  }, DEBOUNCE_DELAY));
+  });
 };
 
 export { initFilters };

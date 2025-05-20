@@ -29,4 +29,9 @@ const renderThumbnails = (photos) => {
   });
 };
 
-export { renderThumbnails };
+const clearThumbnails = () => {
+  picturesContainer.querySelectorAll('.picture').forEach((el) => el.remove());
+};
+
+
+export { renderThumbnails, clearThumbnails };
