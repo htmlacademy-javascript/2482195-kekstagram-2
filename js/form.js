@@ -1,7 +1,7 @@
 import { sendPhotos } from './api.js';
 import { validateForm, resetValidation } from './validation.js';
 import { resetScale } from './scale-editor.js';
-import { resetEffects } from './filter-editor.js';
+import { resetEffects } from './effect-editor.js';
 import { SUBMIT_BUTTON_TEXT, SUBMISSION_STATE, POPUP_TYPE } from './constants.js';
 import { showPopup } from './notifications.js';
 
