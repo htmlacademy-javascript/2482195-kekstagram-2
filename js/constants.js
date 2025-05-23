@@ -53,3 +53,7 @@ export const FilterType = {
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed',
 };
+
+export const FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+export const FILE_ERROR_MESSAGE = 'Пожалуйста, выберите файл изображения (JPEG, PNG, GIF, WEBP)';
