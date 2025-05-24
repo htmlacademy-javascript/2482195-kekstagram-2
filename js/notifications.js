@@ -1,5 +1,7 @@
-import { onEscapeForm } from './form.js';
+// import { onEscapeForm } from './form.js';
 import { Route, ALERT_SHOW_TIME } from './constants.js';
+// import { isEscapeKey } from './util.js';
+import { registerPopup, unregisterPopup } from './popup-settings.js';
 
 const templates = {
   success: document.querySelector('#success').content.querySelector('.success'),
@@ -20,10 +22,12 @@ const showDataErrorMessage = () => {
 };
 
 const closePopupHandler = () => {
-  document.querySelector('.popup').remove();
-  document.removeEventListener('keydown', onEscKeydown);
+  const popupElement = document.querySelector('.popup');
+  if (popupElement) {
+    popupElement.remove();
+  }
+  unregisterPopup();
   document.removeEventListener('click', onClickOutside);
-  document.addEventListener('keydown', onEscapeForm);
   document.body.classList.remove('modal-open');
 };
 
@@ -38,15 +42,16 @@ const showPopup = (type) => {
     closeButton.addEventListener('click', closePopupHandler);
   }
 
-  document.addEventListener('keydown', onEscKeydown);
+  // document.addEventListener('keydown', onEscKeydown);
+  registerPopup(closePopupHandler);
   document.addEventListener('click', onClickOutside);
 };
 
-function onEscKeydown(evt) {
-  if (evt.key === 'Escape') {
-    closePopupHandler();
-  }
-}
+// function onEscKeydown(evt) {
+//   if (isEscapeKey(evt)) {
+//     closePopupHandler();
+//   }
+// }
 
 function onClickOutside(evt) {
   if (

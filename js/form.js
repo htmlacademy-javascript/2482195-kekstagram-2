@@ -4,6 +4,8 @@ import { resetScale } from './scale-editor.js';
 import { resetEffects } from './effect-editor.js';
 import { SUBMIT_BUTTON_TEXT, SUBMISSION_STATE, POPUP_TYPE, FILE_TYPES, FILE_ERROR_MESSAGE } from './constants.js';
 import { showPopup } from './notifications.js';
+import { isEscapeKey } from './util.js';
+import { registerPopup, unregisterPopup } from './popup-settings.js';
 
 const imageUploadInput = document.querySelector('.img-upload__input');
 const imageUploadModal = document.querySelector('.img-upload__overlay');
@@ -49,7 +51,8 @@ const openUploadModal = () => {
   imageUploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  document.addEventListener('keydown', onEscapeForm);
+  // document.addEventListener('keydown', onEscapeForm);
+  registerPopup(closeUploadModal);
   imageUploadModal.addEventListener('click', onClickOutside);
 
   resetEffects();
@@ -60,19 +63,19 @@ const openUploadModal = () => {
 
 imageUploadInput.addEventListener('change', openUploadModal);
 
-const closeUploadModal = () => {
+function closeUploadModal() {
   imageUploadModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   resetValidation();
-
   uploadFormElement.reset();
 
   resetEffects();
 
-  document.removeEventListener('keydown', onEscapeForm);
+  // document.removeEventListener('keydown', onEscapeForm);
+  unregisterPopup();
   imageUploadModal.removeEventListener('click', onClickOutside);
-};
+}
 
 uploadFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
@@ -103,7 +106,7 @@ function onEscapeForm(evt) {
   if (isFocusedInput) {
     return false;
   }
-  if (evt.key === 'Escape') {
+  if (isEscapeKey(evt)) {
     closeUploadModal();
   }
 }
