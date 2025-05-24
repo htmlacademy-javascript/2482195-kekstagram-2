@@ -4,7 +4,7 @@ import { resetScale } from './scale-editor.js';
 import { resetEffects } from './effect-editor.js';
 import { SUBMIT_BUTTON_TEXT, SUBMISSION_STATE, POPUP_TYPE, FILE_TYPES, FILE_ERROR_MESSAGE } from './constants.js';
 import { showPopup } from './notifications.js';
-import { isEscapeKey } from './util.js';
+// import { isEscapeKey } from './util.js';
 import { registerPopup, unregisterPopup } from './popup-settings.js';
 
 const imageUploadInput = document.querySelector('.img-upload__input');
@@ -69,9 +69,13 @@ function closeUploadModal() {
 
   resetValidation();
   uploadFormElement.reset();
-
   resetEffects();
+  resetScale();
 
+  previewImageElement.src = '';
+  effectPreviewIcons.forEach((icon) => {
+    icon.style.backgroundImage = '';
+  });
   // document.removeEventListener('keydown', onEscapeForm);
   unregisterPopup();
   imageUploadModal.removeEventListener('click', onClickOutside);
@@ -101,15 +105,15 @@ cancelUploadButton.addEventListener('click', () => {
   closeUploadModal();
 });
 
-function onEscapeForm(evt) {
-  const isFocusedInput = evt.target.classList.contains('text__hashtags') || evt.target.classList.contains('text__description');
-  if (isFocusedInput) {
-    return false;
-  }
-  if (isEscapeKey(evt)) {
-    closeUploadModal();
-  }
-}
+// function onEscapeForm(evt) {
+//   const isFocusedInput = evt.target.classList.contains('text__hashtags') || evt.target.classList.contains('text__description');
+//   if (isFocusedInput) {
+//     return false;
+//   }
+//   if (isEscapeKey(evt)) {
+//     closeUploadModal();
+//   }
+// }
 
 function onClickOutside(evt) {
   if (evt.target.classList.contains('img-upload__overlay')) {
@@ -117,4 +121,4 @@ function onClickOutside(evt) {
   }
 }
 
-export { onEscapeForm };
+// export { onEscapeForm };

@@ -22,9 +22,14 @@ const showDataErrorMessage = () => {
 };
 
 const closePopupHandler = () => {
-  const popupElement = document.querySelector('.popup');
-  if (popupElement) {
-    popupElement.remove();
+  const successPopup = document.querySelector('.success');
+  const errorPopup = document.querySelector('.error');
+  if (successPopup) {
+    successPopup.remove();
+  }
+
+  if (errorPopup) {
+    errorPopup.remove();
   }
   unregisterPopup();
   document.removeEventListener('click', onClickOutside);
@@ -32,9 +37,13 @@ const closePopupHandler = () => {
 };
 
 const showPopup = (type) => {
+  const existingPopup = document.querySelector('.success, .error');
+  if (existingPopup) {
+    existingPopup.remove();
+  }
   const popupElement = templates[type].cloneNode(true);
   document.body.append(popupElement);
-  popupElement.classList.add('popup');
+  // popupElement.classList.add('popup');
   document.body.classList.add('modal-open');
 
   const closeButton = popupElement.querySelector(`.${type}__button`);
