@@ -1,6 +1,4 @@
-// import { onEscapeForm } from './form.js';
 import { Route, ALERT_SHOW_TIME } from './constants.js';
-// import { isEscapeKey } from './util.js';
 import { registerPopup, unregisterPopup } from './popup-settings.js';
 
 const templates = {
@@ -44,7 +42,6 @@ const showPopup = (type) => {
   }
   const popupElement = templates[type].cloneNode(true);
   document.body.append(popupElement);
-  // popupElement.classList.add('popup');
   if (type !== 'success') {
     document.body.classList.add('modal-open');
   }
@@ -54,16 +51,9 @@ const showPopup = (type) => {
     closeButton.addEventListener('click', closePopupHandler);
   }
 
-  // document.addEventListener('keydown', onEscKeydown);
   registerPopup(closePopupHandler);
   document.addEventListener('click', onClickOutside);
 };
-
-// function onEscKeydown(evt) {
-//   if (isEscapeKey(evt)) {
-//     closePopupHandler();
-//   }
-// }
 
 function onClickOutside(evt) {
   if (

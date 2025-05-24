@@ -76,16 +76,17 @@ function closeUploadModal() {
   effectPreviewIcons.forEach((icon) => {
     icon.style.backgroundImage = '';
   });
-  // document.removeEventListener('keydown', onEscapeForm);
   unregisterPopup();
   imageUploadModal.removeEventListener('click', onClickOutside);
 }
 
-uploadFormElement.addEventListener('submit', (evt) => {
+uploadFormElement.addEventListener('submit', async (evt) => {
   evt.preventDefault();
 
   if (validateForm()) {
     setSubmitButtonState(SUBMISSION_STATE.SENDING);
+
+    await Promise.resolve();
 
     sendPhotos(new FormData(evt.target))
       .then(() => {
@@ -105,20 +106,8 @@ cancelUploadButton.addEventListener('click', () => {
   closeUploadModal();
 });
 
-// function onEscapeForm(evt) {
-//   const isFocusedInput = evt.target.classList.contains('text__hashtags') || evt.target.classList.contains('text__description');
-//   if (isFocusedInput) {
-//     return false;
-//   }
-//   if (isEscapeKey(evt)) {
-//     closeUploadModal();
-//   }
-// }
-
 function onClickOutside(evt) {
   if (evt.target.classList.contains('img-upload__overlay')) {
     closeUploadModal();
   }
 }
-
-// export { onEscapeForm };
