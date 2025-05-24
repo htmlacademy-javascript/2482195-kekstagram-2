@@ -4,7 +4,6 @@ import { resetScale } from './scale-editor.js';
 import { resetEffects } from './effect-editor.js';
 import { SUBMIT_BUTTON_TEXT, SUBMISSION_STATE, POPUP_TYPE, FILE_TYPES, FILE_ERROR_MESSAGE } from './constants.js';
 import { showPopup } from './notifications.js';
-// import { isEscapeKey } from './util.js';
 import { registerPopup, unregisterPopup } from './popup-settings.js';
 
 const imageUploadInput = document.querySelector('.img-upload__input');
@@ -17,8 +16,10 @@ const submitButton = document.querySelector('.img-upload__submit');
 
 const setSubmitButtonState = (state) => {
   if (state === SUBMISSION_STATE.SENDING) {
-    submitButton.disabled = true;
-    submitButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
+    requestAnimationFrame(() => {
+      submitButton.disabled = true;
+      submitButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
+    });
   } else {
     submitButton.disabled = false;
     submitButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
