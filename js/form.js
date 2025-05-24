@@ -17,11 +17,12 @@ const submitButton = document.querySelector('.img-upload__submit');
 const setSubmitButtonState = (state) => {
   if (state === SUBMISSION_STATE.SENDING) {
     requestAnimationFrame(() => {
-      submitButton.disabled = true;
+      submitButton.setAttribute('disabled', 'true');
       submitButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
     });
   } else {
     submitButton.disabled = false;
+    submitButton.removeAttribute('disabled');
     submitButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
   }
 };
