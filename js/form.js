@@ -89,8 +89,8 @@ uploadFormElement.addEventListener('submit', (evt) => {
 
     sendPhotos(new FormData(evt.target))
       .then(() => {
-        showPopup(POPUP_TYPE.SUCCESS);
         closeUploadModal();
+        showPopup(POPUP_TYPE.SUCCESS);
       })
       .catch(() => {
         showPopup(POPUP_TYPE.ERROR);
