@@ -30,6 +30,7 @@ const closePopupHandler = () => {
 
   if (errorPopup) {
     errorPopup.remove();
+    document.body.classList.remove('modal-open');
   }
   unregisterPopup();
   document.removeEventListener('click', onClickOutside);
@@ -44,7 +45,9 @@ const showPopup = (type) => {
   const popupElement = templates[type].cloneNode(true);
   document.body.append(popupElement);
   // popupElement.classList.add('popup');
-  document.body.classList.add('modal-open');
+  if (type !== 'success') {
+    document.body.classList.add('modal-open');
+  }
 
   const closeButton = popupElement.querySelector(`.${type}__button`);
   if (closeButton) {
