@@ -36,7 +36,7 @@ const renderEffect = (effectName) => {
 };
 
 effectSlider.noUiSlider.on('update', () => {
-  sliderValue.value = effectSlider.noUiSlider.get();
+  sliderValue.value = parseFloat(effectSlider.noUiSlider.get()).toString();
   renderEffect(document.querySelector('.effects__radio:checked').value);
 });
 

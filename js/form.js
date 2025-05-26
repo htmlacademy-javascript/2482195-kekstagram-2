@@ -4,6 +4,7 @@ import { resetScale } from './scale-editor.js';
 import { resetEffects } from './effect-editor.js';
 import { SUBMIT_BUTTON_TEXT, SUBMISSION_STATE, POPUP_TYPE, FILE_TYPES, FILE_ERROR_MESSAGE } from './constants.js';
 import { showPopup } from './notifications.js';
+import { registerPopup, unregisterPopup } from './popup-settings.js';
 
 const imageUploadInput = document.querySelector('.img-upload__input');
 const imageUploadModal = document.querySelector('.img-upload__overlay');
@@ -15,10 +16,13 @@ const submitButton = document.querySelector('.img-upload__submit');
 
 const setSubmitButtonState = (state) => {
   if (state === SUBMISSION_STATE.SENDING) {
-    submitButton.disabled = true;
-    submitButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
+    requestAnimationFrame(() => {
+      submitButton.setAttribute('disabled', 'true');
+      submitButton.textContent = SUBMIT_BUTTON_TEXT.SENDING;
+    });
   } else {
     submitButton.disabled = false;
+    submitButton.removeAttribute('disabled');
     submitButton.textContent = SUBMIT_BUTTON_TEXT.IDLE;
   }
 };
@@ -49,7 +53,8 @@ const openUploadModal = () => {
   imageUploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  document.addEventListener('keydown', onEscapeForm);
+  // document.addEventListener('keydown', onEscapeForm);
+  registerPopup(closeUploadModal);
   imageUploadModal.addEventListener('click', onClickOutside);
 
   resetEffects();
@@ -60,30 +65,35 @@ const openUploadModal = () => {
 
 imageUploadInput.addEventListener('change', openUploadModal);
 
-const closeUploadModal = () => {
+function closeUploadModal() {
   imageUploadModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   resetValidation();
-
   uploadFormElement.reset();
-
   resetEffects();
+  resetScale();
 
-  document.removeEventListener('keydown', onEscapeForm);
+  previewImageElement.src = '';
+  effectPreviewIcons.forEach((icon) => {
+    icon.style.backgroundImage = '';
+  });
+  unregisterPopup();
   imageUploadModal.removeEventListener('click', onClickOutside);
-};
+}
 
-uploadFormElement.addEventListener('submit', (evt) => {
+uploadFormElement.addEventListener('submit', async (evt) => {
   evt.preventDefault();
 
   if (validateForm()) {
     setSubmitButtonState(SUBMISSION_STATE.SENDING);
 
+    await Promise.resolve();
+
     sendPhotos(new FormData(evt.target))
       .then(() => {
-        showPopup(POPUP_TYPE.SUCCESS);
         closeUploadModal();
+        showPopup(POPUP_TYPE.SUCCESS);
       })
       .catch(() => {
         showPopup(POPUP_TYPE.ERROR);
@@ -98,20 +108,8 @@ cancelUploadButton.addEventListener('click', () => {
   closeUploadModal();
 });
 
-function onEscapeForm(evt) {
-  const isFocusedInput = evt.target.classList.contains('text__hashtags') || evt.target.classList.contains('text__description');
-  if (isFocusedInput) {
-    return false;
-  }
-  if (evt.key === 'Escape') {
-    closeUploadModal();
-  }
-}
-
 function onClickOutside(evt) {
   if (evt.target.classList.contains('img-upload__overlay')) {
     closeUploadModal();
   }
 }
-
-export { onEscapeForm };

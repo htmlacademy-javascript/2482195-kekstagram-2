@@ -1,5 +1,5 @@
-import { onEscapeForm } from './form.js';
 import { Route, ALERT_SHOW_TIME } from './constants.js';
+import { registerPopup, unregisterPopup } from './popup-settings.js';
 
 const templates = {
   success: document.querySelector('#success').content.querySelector('.success'),
@@ -20,33 +20,40 @@ const showDataErrorMessage = () => {
 };
 
 const closePopupHandler = () => {
-  document.querySelector('.popup').remove();
-  document.removeEventListener('keydown', onEscKeydown);
+  const successPopup = document.querySelector('.success');
+  const errorPopup = document.querySelector('.error');
+  if (successPopup) {
+    successPopup.remove();
+  }
+
+  if (errorPopup) {
+    errorPopup.remove();
+    document.body.classList.remove('modal-open');
+  }
+  unregisterPopup();
   document.removeEventListener('click', onClickOutside);
-  document.addEventListener('keydown', onEscapeForm);
   document.body.classList.remove('modal-open');
 };
 
 const showPopup = (type) => {
+  const existingPopup = document.querySelector('.success, .error');
+  if (existingPopup) {
+    existingPopup.remove();
+  }
   const popupElement = templates[type].cloneNode(true);
   document.body.append(popupElement);
-  popupElement.classList.add('popup');
-  document.body.classList.add('modal-open');
+  if (type !== 'success') {
+    document.body.classList.add('modal-open');
+  }
 
   const closeButton = popupElement.querySelector(`.${type}__button`);
   if (closeButton) {
     closeButton.addEventListener('click', closePopupHandler);
   }
 
-  document.addEventListener('keydown', onEscKeydown);
+  registerPopup(closePopupHandler);
   document.addEventListener('click', onClickOutside);
 };
-
-function onEscKeydown(evt) {
-  if (evt.key === 'Escape') {
-    closePopupHandler();
-  }
-}
 
 function onClickOutside(evt) {
   if (
