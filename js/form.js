@@ -53,7 +53,6 @@ const openUploadModal = () => {
   imageUploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  // document.addEventListener('keydown', onEscapeForm);
   registerPopup(closeUploadModal);
   imageUploadModal.addEventListener('click', onClickOutside);
 
